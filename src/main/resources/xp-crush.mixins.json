@@ -1,0 +1,15 @@
+{
+	"required": true,
+	"package": "justfatlard.xp_crush.mixin",
+	"minVersion": "0.8",
+	"compatibilityLevel": "JAVA_25",
+	"injectors": { "defaultRequire": 1 },
+	"mixins": [
+		"ExperienceOrbAccessor",
+		"ExperienceOrbHopperMixin",
+		"FallingBlockCrushMixin",
+		"HopperXpMixin",
+		"LivingEntityXpMixin",
+		"PistonCrushMixin"
+	]
+}

@@ -1,0 +1,32 @@
+{
+	"schemaVersion": 1,
+	"id": "xp-crush",
+	"version": "${version}",
+	"name": "XP Crush",
+	"description": "Crush dropped items under a piston, an anvil or a falling column and get experience back, worth what the item took to make",
+	"authors": [
+		"justfatlard"
+	],
+	"contact": {
+		"homepage": "https://github.com/fatlard1993/xp-crush",
+		"sources": "https://github.com/fatlard1993/xp-crush",
+		"issues": "https://github.com/fatlard1993/xp-crush/issues"
+	},
+	"license": "MIT",
+	"icon": "assets/xp-crush/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"justfatlard.xp_crush.Main"
+		]
+	},
+	"mixins": [
+		"xp-crush.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=${loaderVersion}",
+		"minecraft": "${minecraftDependency}",
+		"java": ">=25",
+		"fabric-api": "${fabricApiVersion}"
+	}
+}
