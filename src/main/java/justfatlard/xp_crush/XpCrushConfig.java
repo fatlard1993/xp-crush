@@ -252,6 +252,40 @@ public final class XpCrushConfig {
 
 	private static final String PRICE_PREFIX = "worth.";
 
+	/**
+	 * Write one value back into the file where its line stands, keeping the comments and order;
+	 * added at the end when the file has no line for it.
+	 */
+	private static void store(String key, String value) {
+		try {
+			java.util.List<String> lines = Files.exists(CONFIG_PATH)
+				? new java.util.ArrayList<>(Files.readAllLines(CONFIG_PATH)) : new java.util.ArrayList<>();
+			boolean found = false;
+			for (int i = 0; i < lines.size(); i++) {
+				String line = lines.get(i).trim();
+				if (line.startsWith(key + "=") || line.startsWith(key + " =")) {
+					lines.set(i, key + "=" + value);
+					found = true;
+				}
+			}
+			if (!found) lines.add(key + "=" + value);
+			Files.createDirectories(CONFIG_PATH.getParent());
+			Files.write(CONFIG_PATH, lines);
+		} catch (java.io.IOException e) {
+			Main.LOGGER.error("Could not write {}: {}", CONFIG_PATH, e.getMessage());
+		}
+	}
+
+	public static void setPistons(boolean on) { pistons = on; store("pistons", String.valueOf(on)); }
+	public static void setFallingBlocks(boolean on) { fallingBlocks = on; store("falling_blocks", String.valueOf(on)); }
+	public static void setFallingColumns(boolean on) { fallingColumns = on; store("falling_columns", String.valueOf(on)); }
+	public static void setColumnMin(int blocks) { columnMin = blocks; store("column_min", String.valueOf(blocks)); }
+	public static void setUnattendedKills(boolean on) { unattendedKills = on; store("unattended_kills", String.valueOf(on)); }
+	public static void setUnattendedKillFraction(double fraction) { unattendedKillFraction = fraction; store("unattended_kill_fraction", String.valueOf(fraction)); }
+	public static void setHopperBottles(boolean on) { hopperBottles = on; store("hopper_bottles", String.valueOf(on)); }
+	public static void setXpPerBottle(int points) { xpPerBottle = points; store("xp_per_bottle", String.valueOf(points)); }
+	public static void setTomes(boolean on) { tomes = on; store("tomes", String.valueOf(on)); }
+
 	public static boolean pistons() { return pistons; }
 	public static boolean fallingBlocks() { return fallingBlocks; }
 	public static boolean fallingColumns() { return fallingColumns; }

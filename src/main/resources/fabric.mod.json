@@ -28,5 +28,8 @@
 		"minecraft": "${minecraftDependency}",
 		"java": ">=25",
 		"fabric-api": "${fabricApiVersion}"
+	},
+	"suggests": {
+		"pandorical": "*"
 	}
 }

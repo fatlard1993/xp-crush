@@ -19,6 +19,23 @@ dependencies {
 	minecraft "com.mojang:minecraft:${project.minecraft_version}"
 	implementation "net.fabricmc:fabric-loader:${project.loader_version}"
 	implementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+
+	// Optional: the settings page in Pandorical's mods menu. Compile-only and never bundled; the
+	// class that names Pandorical is only loaded when it is installed, so vanilla servers without
+	// it are unaffected. Resolved by the version Pandorical declares, since Gradle never clears
+	// build/libs and a pinned name keeps compiling against whatever an old build left behind.
+	def pandoricalProps = file("../pandorical/gradle.properties")
+	if (pandoricalProps.exists()) {
+		def pandoricalVersion = new Properties().with {
+			pandoricalProps.withInputStream { load(it) }
+			getProperty("mod_version")?.trim()
+		}
+		def pandoricalJar = file("../pandorical/build/libs/pandorical-${pandoricalVersion}.jar")
+		if (!pandoricalJar.exists()) {
+			throw new GradleException("pandorical ${pandoricalVersion} is not built. Run `mc-build pandorical` first.")
+		}
+		compileOnly files(pandoricalJar)
+	}
 }
 
 // Fabric tests these predicates against the loader's *normalized* game version,

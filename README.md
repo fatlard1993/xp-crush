@@ -1,6 +1,6 @@
 # XP Crush
 
-A Minecraft Fabric mod. Crush a dropped item under a piston, an anvil or a fall of sand and get experience back, worth what the item took to make. And a few more ways for experience to move: mobs that die on their own pay a share, hoppers fill bottles, lecterns bind levels into books.
+A Minecraft Fabric mod. Crush a dropped item under a piston, an anvil or a fall of sand and get experience back, worth what the item took to make. And a few more ways for experience to move: mobs that die on their own pay a share, hoppers fill bottles, lecterns bind experience into books.
 
 ## What This Mod Does
 
@@ -64,7 +64,7 @@ If you do not have enough, the book stays a book and gains a line spelling out t
 - **Merged orbs pay in full.** A hopper taking an orb that is several orbs riding together gets all of them.
 - **The tree is read** once when the server starts and again after `/reload`, since that is when recipes change.
 - **A price on the list is final.** It is used even where a recipe could make the item for less, which is how a gold ingot stays worth a gold ingot when nine nuggets make one.
-- **A recipe that needs the thing it makes** is walked once and then refused, so nuggets from an ingot from nuggets bottoms out on whichever side has a price of its own.
+- **A recipe loop costs nothing extra.** An item on one is priced by the cheapest way into it, so nuggets from an ingot from nuggets bottom out on whichever side has a price of its own. Anything made only from things made from each other, with no raw material under it anywhere, is worth the raw price.
 - **Binding empties and refills.** Your experience is set to zero and what is left after the binding is given back through the game's own rule, so the level you land on is the one those points buy and not an approximation of it.
 
 ## Configuration
@@ -85,7 +85,7 @@ If you do not have enough, the book stays a book and gains a line spelling out t
 | `unattended_kill_fraction` | 0.75 | That share |
 | `hopper_bottles` | true | Hoppers fill empty bottles from orbs |
 | `xp_per_bottle` | 7 | Points to fill one bottle |
-| `tomes` | true | Lecterns bind levels into tomes |
+| `tomes` | true | Lecterns bind experience into tomes |
 | `tome_binding_share` | 0.05 | Base share of the bound points spent on the binding, on top |
 | `tome_binding_share_per_thousand` | 0.05 | Added to the share per thousand points bound |
 | `tome_binding_share_max` | 0.5 | The most the share can reach |
@@ -99,6 +99,8 @@ If you do not have enough, the book stays a book and gains a line spelling out t
 ## Pandorical
 
 Not needed. Everything here happens on the server and shows up on a vanilla client as items vanishing and orbs appearing, bottles filling, and a book that glows.
+
+With Pandorical on the server, ops get XP Crush's page in its mods menu: the switches for pistons, anvils and stalactites, falling columns, unattended kills, hopper bottles and tomes, and the column size, the unattended share (as a percent) and the experience a bottle takes. Prices and scaling stay in the file.
 
 ## Development
 

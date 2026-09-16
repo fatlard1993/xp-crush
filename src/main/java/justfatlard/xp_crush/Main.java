@@ -31,6 +31,9 @@ public class Main implements ModInitializer {
 	@Override
 	public void onInitialize() {
 		XpCrushConfig.load();
+		if (net.fabricmc.loader.api.FabricLoader.getInstance().isModLoaded("pandorical")) {
+			justfatlard.xp_crush.integration.CrushSettings.register();
+		}
 
 		// The recipe tree is read once the recipes exist, and again whenever a reload changes them.
 		ServerLifecycleEvents.SERVER_STARTED.register(Worth::rebuild);

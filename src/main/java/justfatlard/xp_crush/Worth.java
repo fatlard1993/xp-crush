@@ -40,7 +40,12 @@ import net.minecraft.world.item.enchantment.ItemEnchantments;
  * <p>On top of the item's own price: its rarity multiplies it, every enchantment level adds a
  * flat amount, a worn tool pays for what is left of it, and a box pays for what is inside.
  *
- * <p>Built once per server start and again on reload, since that is when recipes change.
+ * <p>Built once per server start and again on reload, since that is when recipes change, and
+ * built whole: every price is settled then, so a crush is a lookup. It used to be worked out on
+ * demand by walking the tree from the item down, and a walk through the tree's loops - nuggets
+ * and ingots and blocks, every dye, every stage of copper - could not keep what it found, so the
+ * same branches were walked again from every direction. One crushed item took the server's tick
+ * past sixty seconds and the watchdog shut the server down.
  */
 public final class Worth {
 	private Worth() {}
@@ -50,9 +55,6 @@ public final class Worth {
 
 	private static final Map<Item, List<Producer>> producers = new HashMap<>();
 	private static final Map<Item, Double> prices = new HashMap<>();
-
-	/** How long a chain of recipes is followed before the thing at the end is called raw. */
-	private static final int MAX_DEPTH = 64;
 
 	public static void rebuild(MinecraftServer server) {
 		producers.clear();
@@ -87,7 +89,92 @@ public final class Worth {
 			}
 		}
 
+		settle();
 		Main.LOGGER.info("[{}] Priced {} recipes for {} items", Main.MOD_ID, counted, producers.size());
+	}
+
+	/**
+	 * Every price, cheapest first, the way Dijkstra settles distances.
+	 *
+	 * <p>Raw materials and configured prices go in first. The cheapest unsettled item is settled,
+	 * and each recipe it can fill a slot in hears about it; a recipe whose every slot is filled
+	 * offers its result a price. Because things are settled in order of price, the first option
+	 * to fill a slot is the cheapest option that slot will ever have, so each slot is filled once
+	 * and each recipe costed once. A loop costs nothing extra: an item on one is settled by
+	 * whichever way into it is cheapest and the way back round is never better, since every
+	 * craft adds to the price rather than taking from it.
+	 *
+	 * <p>Anything never reached is made only from things that are made only from each other, with
+	 * no raw material anywhere under it. It gets the raw price, as it did before.
+	 */
+	private static void settle() {
+		// Keyed by identity wherever a recipe is the key: two recipes with the same ingredients and
+		// count are equal records - stone into stairs and stone into bricks at the stonecutter - and
+		// are still two recipes making two things.
+		// Which recipe slots each item can fill.
+		record Slot(Producer producer, int index) {}
+		Map<Item, List<Slot>> fills = new HashMap<>();
+		Map<Producer, Item> resultOf = new java.util.IdentityHashMap<>();
+		for (Map.Entry<Item, List<Producer>> entry : producers.entrySet()) {
+			for (Producer producer : entry.getValue()) {
+				resultOf.put(producer, entry.getKey());
+				for (int i = 0; i < producer.ingredients().size(); i++) {
+					for (Item option : producer.ingredients().get(i)) {
+						fills.computeIfAbsent(option, k -> new ArrayList<>()).add(new Slot(producer, i));
+					}
+				}
+			}
+		}
+
+		record Offer(Item item, double price) {}
+		java.util.PriorityQueue<Offer> queue =
+			new java.util.PriorityQueue<>(java.util.Comparator.comparingDouble(Offer::price));
+		Map<Item, Double> best = new HashMap<>();
+
+		Set<Item> everything = new HashSet<>(producers.keySet());
+		everything.addAll(fills.keySet());
+		for (Item item : everything) {
+			Double configured = XpCrushConfig.priceOf(BuiltInRegistries.ITEM.getKey(item));
+			double start = configured != null ? configured
+				: producers.containsKey(item) ? Double.POSITIVE_INFINITY
+				: XpCrushConfig.xpPerRawItem();
+			if (start < Double.POSITIVE_INFINITY) {
+				best.put(item, start);
+				queue.add(new Offer(item, start));
+			}
+		}
+
+		Map<Producer, boolean[]> filled = new java.util.IdentityHashMap<>();
+		Map<Producer, double[]> sums = new java.util.IdentityHashMap<>();
+		Map<Producer, int[]> remaining = new java.util.IdentityHashMap<>();
+
+		while (!queue.isEmpty()) {
+			Offer offer = queue.poll();
+			if (prices.containsKey(offer.item()) || offer.price() > best.get(offer.item())) continue;
+			prices.put(offer.item(), offer.price());
+
+			for (Slot slot : fills.getOrDefault(offer.item(), List.of())) {
+				Producer producer = slot.producer();
+				boolean[] done = filled.computeIfAbsent(producer, k -> new boolean[k.ingredients().size()]);
+				if (done[slot.index()]) continue;
+				done[slot.index()] = true;
+				double[] sum = sums.computeIfAbsent(producer, k -> new double[1]);
+				sum[0] += offer.price();
+				int[] left = remaining.computeIfAbsent(producer, k -> new int[] {k.ingredients().size()});
+				if (--left[0] > 0) continue;
+
+				Item result = resultOf.get(producer);
+				// A configured price is the price; recipes do not argue with it.
+				if (XpCrushConfig.priceOf(BuiltInRegistries.ITEM.getKey(result)) != null) continue;
+				double price = sum[0] / producer.count() + XpCrushConfig.xpPerCraftStep();
+				if (!prices.containsKey(result) && price < best.getOrDefault(result, Double.POSITIVE_INFINITY)) {
+					best.put(result, price);
+					queue.add(new Offer(result, price));
+				}
+			}
+		}
+
+		for (Item item : producers.keySet()) prices.putIfAbsent(item, XpCrushConfig.xpPerRawItem());
 	}
 
 	/** The experience this stack pays when crushed. */
@@ -139,66 +226,8 @@ public final class Worth {
 	public static double priceOf(Item item) {
 		Double known = prices.get(item);
 		if (known != null) return known;
-		return compute(item, new HashSet<>(), 0, new boolean[1]);
-	}
-
-	/**
-	 * The cheapest way to have one of these.
-	 *
-	 * <p>A recipe that needs the thing it makes - nuggets from an ingot from nuggets - is walked
-	 * once and then refused, so the loop bottoms out on whichever side has a price of its own.
-	 *
-	 * <p>A price found without refusing anything is the item's price and is kept. One found while
-	 * part of the tree was off limits is only right for the walk that found it, so it is used and
-	 * forgotten: the same item asked about from the top gets the whole tree and the true price.
-	 *
-	 * @param tainted set when any refusal or cut-off shaped the answer
-	 */
-	private static double compute(Item item, Set<Item> walking, int depth, boolean[] tainted) {
+		// In no recipe at all, either way round: raw, or priced in the config.
 		Double configured = XpCrushConfig.priceOf(BuiltInRegistries.ITEM.getKey(item));
-		if (configured != null) return configured;
-
-		Double known = prices.get(item);
-		if (known != null) return known;
-
-		List<Producer> made = producers.get(item);
-		if (made == null || made.isEmpty()) {
-			prices.put(item, XpCrushConfig.xpPerRawItem());
-			return XpCrushConfig.xpPerRawItem();
-		}
-		if (depth >= MAX_DEPTH || !walking.add(item)) {
-			tainted[0] = true;
-			return XpCrushConfig.xpPerRawItem();
-		}
-
-		boolean[] here = new boolean[1];
-		double best = Double.POSITIVE_INFINITY;
-		for (Producer producer : made) {
-			double cost = 0.0;
-			boolean possible = true;
-			for (List<Item> options : producer.ingredients()) {
-				double cheapest = Double.POSITIVE_INFINITY;
-				for (Item option : options) {
-					if (walking.contains(option)) {
-						here[0] = true;
-						continue;
-					}
-					cheapest = Math.min(cheapest, compute(option, walking, depth + 1, here));
-				}
-				if (cheapest == Double.POSITIVE_INFINITY) {
-					possible = false;
-					break;
-				}
-				cost += cheapest;
-			}
-			if (!possible) continue;
-			best = Math.min(best, cost / producer.count() + XpCrushConfig.xpPerCraftStep());
-		}
-		walking.remove(item);
-
-		double price = best == Double.POSITIVE_INFINITY ? XpCrushConfig.xpPerRawItem() : best;
-		if (!here[0]) prices.put(item, price);
-		tainted[0] |= here[0];
-		return price;
+		return configured != null ? configured : XpCrushConfig.xpPerRawItem();
 	}
 }

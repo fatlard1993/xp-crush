@@ -17,6 +17,7 @@ import java.util.Set;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.piston.PistonMovingBlockEntity;
 import net.minecraft.world.phys.AABB;
+import net.minecraft.world.phys.shapes.VoxelShape;
 import net.minecraft.world.phys.Vec3;
 
 /**
@@ -41,7 +42,18 @@ public final class Crush {
 	 */
 	private static final double DEEP = 0.1;
 
-	/** After a piston has moved everything it can, whatever is left inside something solid. */
+	/** How far ahead of an item the way has to be clear for it to count as merely pushed. */
+	private static final double AHEAD = 0.3;
+
+	/**
+	 * After a piston has moved everything it can: whatever is left inside something solid, and
+	 * whatever is caught between the mover and something solid ahead of it.
+	 *
+	 * <p>The second is the piston head on its own. Its plate is a quarter of a block, so an item
+	 * driven ahead of it into a wall ends in the three-quarter pocket behind the plate, touching
+	 * both and inside neither, and by the inside rule alone it just sat there. Pinned is crushed:
+	 * touching the mover, with no room to go the way it is being pushed.
+	 */
 	public static void byPiston(ServerLevel level, BlockPos moving, Direction direction) {
 		if (!XpCrushConfig.pistons()) return;
 
@@ -49,10 +61,30 @@ public final class Crush {
 		AABB region = new AABB(moving)
 			.expandTowards(direction.getStepX(), direction.getStepY(), direction.getStepZ())
 			.inflate(0.01);
+		// Where the block being moved will stand when it arrives, not where it is now.
+		//
+		// Now is no use. This runs while the piston is still travelling, and by the time it
+		// returns the item has already been shoved as far as it will go: flush against the wall,
+		// a fifth of a block clear of a head that has not finished coming out. Neither inside
+		// anything nor touching anything, so nothing counted it - and the tick the head does
+		// land on it, nothing runs at all. The destination is the honest question: an item still
+		// standing where the block is about to be is an item that could not get out of the way.
+		AABB landing = null;
+		if (level.getBlockEntity(moving) instanceof PistonMovingBlockEntity piston) {
+			VoxelShape shape = piston.getMovedState().getCollisionShape(level, moving);
+			if (!shape.isEmpty()) landing = shape.bounds().move(moving);
+		}
 
 		for (ItemEntity item : level.getEntitiesOfClass(ItemEntity.class, region)) {
 			if (item.isRemoved()) continue;
-			if (level.noCollision(item, item.getBoundingBox().deflate(DEEP))) continue;
+			AABB box = item.getBoundingBox();
+			boolean inside = !level.noCollision(item, box.deflate(DEEP));
+			// Shrunk a little before it is slid ahead, so a box resting on a floor is not read as
+			// colliding with the floor it rests on.
+			boolean pinned = landing != null && box.intersects(landing.inflate(0.02))
+				&& !level.noCollision(item, box.deflate(0.02)
+				.move(direction.getStepX() * AHEAD, direction.getStepY() * AHEAD, direction.getStepZ() * AHEAD));
+			if (!inside && !pinned) continue;
 			Press press = pressing(level, item);
 			crush(level, item, force(0.0, press.blocks(), press.squeezes()));
 		}
