@@ -5,12 +5,17 @@
 	],
 	"versions": {
 		"1.0.1": [
-			"Prices are settled once when recipes load rather than worked out per crush, which is what used to take a tick past a minute and shut a server down.",
+			"Prices are settled once when recipes load rather than worked out per crush.",
+			"That is what used to take a tick past a minute and shut a server down.",
 			"An item pinned against a wall by a piston head counts as crushed, and operators get a settings page."
 		],
 		"1.0.0": [
-			"The first release: crushing by piston, anvil and falling column, with a harder hit paying more, and prices read off the recipe tree so a worn tool pays for what is left of it and a full shulker box pays for its contents.",
-			"Deaths nobody had a hand in pay a share, a hopper with an empty bottle in it fills bottles from orbs, and a book and quill on a lectern binds points into a Tome of Experience."
+			"Crushing by piston, anvil and falling column, with a harder hit paying more.",
+			"Prices are read off the recipe tree, so a worn tool pays for what is left of it.",
+			"A full shulker box pays for its contents.",
+			"Deaths nobody had a hand in pay a share.",
+			"A hopper with an empty bottle in it fills bottles from orbs.",
+			"A book and quill on a lectern binds points into a Tome of Experience."
 		]
 	}
 }
