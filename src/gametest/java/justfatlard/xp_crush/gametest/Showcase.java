@@ -32,9 +32,9 @@ public final class Showcase implements FabricClientGameTest {
 			// Orbs chase a player within eight blocks, so the camera has to stand off or they end
 			// up sitting on the lens. A narrow field of view brings them back without moving in.
 			context.runOnClient(client -> client.options.fov().set(30));
-			server.runCommand("gamerule doDaylightCycle false");
-			server.runCommand("gamerule doWeatherCycle false");
-			server.runCommand("gamerule doTileDrops true");
+			server.runCommand("gamerule advance_time false");
+			server.runCommand("gamerule advance_weather false");
+			server.runCommand("gamerule block_drops true");
 			server.runCommand("weather clear");
 			server.runCommand("time set 1000");
 			server.runCommand("gamemode spectator @a");
