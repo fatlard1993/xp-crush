@@ -8,6 +8,7 @@
 	"environment": "*",
 	"entrypoints": {
 		"fabric-client-gametest": [
+			"justfatlard.xp_crush.gametest.PistonCrushes",
 			"justfatlard.xp_crush.gametest.Showcase"
 		]
 	},

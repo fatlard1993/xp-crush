@@ -91,6 +91,18 @@ public final class Crush {
 	}
 
 	/**
+	 * An item a piston that moves its blocks in one step has pinned: one that could not be shoved
+	 * clear of the blocks now standing where it was. Piston Extension's longer reaches set their
+	 * blocks down at once rather than moving them, so nothing above ever sees them; it calls this.
+	 *
+	 * @param blocks how many blocks were driven at it, the head and its shafts among them
+	 */
+	public static void pinned(ServerLevel level, ItemEntity item, int blocks) {
+		if (!XpCrushConfig.pistons() || item.isRemoved()) return;
+		crush(level, item, force(0.0, blocks, 0));
+	}
+
+	/**
 	 * What is pressing on an item: how many blocks in all, and on how many axes from both sides.
 	 *
 	 * @param blocks   every moving block touching the item plus everything moving behind each

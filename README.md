@@ -8,7 +8,7 @@ An item on the floor is worth what went into it, and vanilla has no way to get a
 
 Three things crush:
 
-- **A piston.** An item driven into a block by a moving piston block, the way a mob would be squashed.
+- **A piston.** An item driven into a block by a moving piston block, the way a mob would be squashed. Pistons from [Piston Extension](https://github.com/fatlard1993/piston-extension) set to a longer reach crush too.
 - **An anvil.** Or a falling stalactite: anything that lands hard enough to hurt a mob. It has to have fallen more than one block, as it does to hurt.
 - **A falling column.** Sand, gravel, concrete powder: a plain falling block landing on an item as part of a column of at least two. One block on its own just pops the item out of the hole it filled, so one block on its own does nothing here either.
 

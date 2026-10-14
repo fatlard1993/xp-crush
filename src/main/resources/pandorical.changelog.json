@@ -4,6 +4,9 @@
 		"And a few more ways for experience to move: mobs that die on their own pay a share, hoppers fill bottles, and a lectern binds experience into a book."
 	],
 	"versions": {
+		"1.1.0": [
+			"Pistons from Piston Extension set to push two or three crush items too."
+		],
 		"1.0.1": [
 			"Prices are settled once when recipes load rather than worked out per crush.",
 			"That is what used to take a tick past a minute and shut a server down.",
