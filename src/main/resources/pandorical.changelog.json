@@ -4,6 +4,9 @@
 		"And a few more ways for experience to move: mobs that die on their own pay a share, hoppers fill bottles, and a lectern binds experience into a book."
 	],
 	"versions": {
+		"1.1.1": [
+			"Mod Menu's Donate button leads to sponsoring the author on GitHub. Nothing in play changes."
+		],
 		"1.1.0": [
 			"Pistons from Piston Extension set to push two or three crush items too."
 		],
