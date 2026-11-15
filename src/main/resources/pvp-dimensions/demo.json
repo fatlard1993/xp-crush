@@ -1,0 +1,43 @@
+{
+  "demo": {
+    "name": "XP Crush",
+    "icon": "minecraft:anvil",
+    "about": [
+      "Crush a dropped item under a piston, an anvil or a falling column of sand and it turns into experience, worth what the item took to make.",
+      "Set the piston facing a block with a one-block gap, drop something in the gap and flip the lever, or drop the anvil onto it from a few blocks up. The totem and the enchanted sword pay the most."
+    ]
+  },
+  "pvp_preset": 1,
+  "needs": ["xp-crush"],
+  "preset": {
+    "name": "XP Crush",
+    "icon": "minecraft:anvil",
+    "pvp": false,
+    "game_mode": "survival",
+    "entry_kit": [
+      {"slot": 0, "item": {"id": "minecraft:piston", "count": 2}},
+      {"slot": 1, "item": {"id": "minecraft:lever", "count": 2}},
+      {"slot": 2, "item": {"id": "minecraft:anvil", "count": 2}},
+      {"slot": 3, "item": {"id": "minecraft:sand", "count": 32}},
+      {"slot": 4, "item": {"id": "minecraft:cobblestone", "count": 64}},
+      {"slot": 5, "item": {"id": "minecraft:iron_pickaxe", "count": 1}},
+      {"slot": 8, "item": {"id": "minecraft:bread", "count": 8}},
+      {"slot": 9, "item": {"id": "minecraft:diamond_pickaxe", "count": 2}},
+      {"slot": 10, "item": {"id": "minecraft:iron_sword", "count": 1, "components": {"minecraft:enchantments": {"minecraft:sharpness": 5, "minecraft:unbreaking": 3}}}},
+      {"slot": 11, "item": {"id": "minecraft:totem_of_undying", "count": 1}},
+      {"slot": 12, "item": {"id": "minecraft:gold_ingot", "count": 16}},
+      {"slot": 13, "item": {"id": "minecraft:ender_pearl", "count": 8}},
+      {"slot": 14, "item": {"id": "minecraft:emerald", "count": 16}},
+      {"slot": 15, "item": {"id": "minecraft:cobblestone", "count": 64}}
+    ],
+    "respawn_kit": "entry",
+    "goal": "time",
+    "mobs": "off",
+    "life": 15,
+    "size": 2,
+    "world": "overworld",
+    "shape": "flat",
+    "biome": "minecraft:plains",
+    "weather": "clear"
+  }
+}
