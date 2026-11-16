@@ -4,6 +4,9 @@
 		"And a few more ways for experience to move: mobs that die on their own pay a share, hoppers fill bottles, anvils mend with them, and a lectern binds experience into a book."
 	],
 	"versions": {
+		"1.2.1": [
+			"Orbs piled on a hopper with no bottle to fill look for one once a tick between them, not once each."
+		],
 		"1.2.0": [
 			"An anvil mends anything with mending using bottles o' enchanting, one level for the work."
 		],
