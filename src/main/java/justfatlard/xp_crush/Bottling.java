@@ -34,6 +34,11 @@ public final class Bottling {
 		int xpCrush$stored();
 
 		void xpCrush$store(int value);
+
+		/** The game tick this hopper last turned an orb away for want of a bottle, or -1. */
+		long xpCrush$dryAt();
+
+		void xpCrush$markDry(long gameTime);
 	}
 
 	/** An orb has ticked; if it is sitting in a hopper that can use it, take it. */
@@ -48,12 +53,20 @@ public final class Bottling {
 		BlockState state = level.getBlockState(hopper.getBlockPos());
 		if (!state.getValue(HopperBlock.ENABLED)) return;
 
+		Holds holds = (Holds) hopper;
+		// Every orb on a dry hopper asks the same question each tick; the fed container lookup
+		// includes an entity search, so answer it once per hopper per tick.
+		long now = level.getGameTime();
+		if (holds.xpCrush$dryAt() == now) return;
+
 		Direction facing = state.getValue(HopperBlock.FACING);
 		Container fed = HopperBlockEntity.getContainerAt(level, hopper.getBlockPos().relative(facing));
 
-		if (findBottle(hopper) < 0 && (fed == null || findBottle(fed) < 0)) return;
+		if (findBottle(hopper) < 0 && (fed == null || findBottle(fed) < 0)) {
+			holds.xpCrush$markDry(now);
+			return;
+		}
 
-		Holds holds = (Holds) hopper;
 		int taken = orb.getValue() * ((ExperienceOrbAccessor) orb).xpCrush$count();
 		holds.xpCrush$store(holds.xpCrush$stored() + taken);
 		orb.discard();

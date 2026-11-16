@@ -18,6 +18,8 @@ public abstract class HopperXpMixin implements Bottling.Holds {
 
 	@Unique private int xpCrush$stored;
 
+	@Unique private long xpCrush$dryAt = -1;
+
 	@Override
 	public int xpCrush$stored() {
 		return xpCrush$stored;
@@ -26,6 +28,16 @@ public abstract class HopperXpMixin implements Bottling.Holds {
 	@Override
 	public void xpCrush$store(int value) {
 		xpCrush$stored = Math.max(0, value);
+	}
+
+	@Override
+	public long xpCrush$dryAt() {
+		return xpCrush$dryAt;
+	}
+
+	@Override
+	public void xpCrush$markDry(long gameTime) {
+		xpCrush$dryAt = gameTime;
 	}
 
 	@Inject(method = "saveAdditional", at = @At("TAIL"))
