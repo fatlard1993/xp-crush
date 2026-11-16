@@ -5,6 +5,7 @@
 	"compatibilityLevel": "JAVA_25",
 	"injectors": { "defaultRequire": 1 },
 	"mixins": [
+		"AnvilBottleMixin",
 		"ExperienceOrbAccessor",
 		"ExperienceOrbHopperMixin",
 		"FallingBlockCrushMixin",

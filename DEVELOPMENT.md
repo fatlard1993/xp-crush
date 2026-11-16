@@ -10,8 +10,10 @@ For what the mod is and how it plays, see [README.md](README.md).
 | `Crush.java` | Which items are caught under what, and turning them into orbs |
 | `Worth.java` | The recipe tree, and what a stack is worth |
 | `Bottling.java` | Hoppers taking in orbs and filling bottles |
+| `Mending.java` | What a stack of bottles repairs on an anvil |
 | `Tome.java` | The lectern spell, and the tome it makes |
 | `XpCrushConfig.java` | The knobs and the price list |
+| `mixin/AnvilBottleMixin.java` | The anvil's result for bottles on a mending item |
 | `mixin/PistonCrushMixin.java` | After a moving piston block has shoved everything in its way |
 | `mixin/FallingBlockCrushMixin.java` | The moment a falling block lands |
 | `mixin/LivingEntityXpMixin.java` | The share paid for a death nobody caused |

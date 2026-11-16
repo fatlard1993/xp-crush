@@ -1,6 +1,6 @@
 # XP Crush
 
-A Minecraft Fabric mod. Crush a dropped item under a piston, an anvil or a fall of sand and get experience back, worth what the item took to make. And a few more ways for experience to move: mobs that die on their own pay a share, hoppers fill bottles, lecterns bind experience into books.
+A Minecraft Fabric mod. Crush a dropped item under a piston, an anvil or a fall of sand and get experience back, worth what the item took to make. And a few more ways for experience to move: mobs that die on their own pay a share, hoppers fill bottles, anvils mend with them, lecterns bind experience into books.
 
 ## What This Mod Does
 
@@ -43,6 +43,12 @@ A hopper with no empty bottle anywhere leaves the orbs alone: a hopper that swal
 
 The held number is saved with the hopper, so a farm does not lose a part-filled bottle to a restart.
 
+## Mending At The Anvil
+
+A damaged tool, weapon or piece of armour with Mending goes on the left of an anvil, bottles o' enchanting on the right, and it comes out repaired. Each bottle mends what the experience inside it would mend picked up as orbs: seven points by default, so fourteen durability. The anvil uses as many bottles as the damage needs, takes one level for the work, and leaves the item's prior-work penalty where it was, since mending is the way round that penalty and the bottles are the payment.
+
+So a hopper farm full of bottles is a repair bench for everything that mends, without standing in the farm.
+
 ## Tomes
 
 Write `/xp 500` on the first line of a book and quill and set it on a lectern. If you have the five hundred points and the binding's share on top, the lectern takes them and hands you a **Tome of Experience**, an enchanted book to look at, holding five hundred. Use the tome and they come back out, for you or whoever you gave it to. The share spent on the binding is gone: it is what keeps a tome from being a free bank.
@@ -84,7 +90,8 @@ If you do not have enough, the book stays a book and gains a line spelling out t
 | `unattended_kills` | true | Mobs that die without a player pay a share |
 | `unattended_kill_fraction` | 0.75 | That share |
 | `hopper_bottles` | true | Hoppers fill empty bottles from orbs |
-| `xp_per_bottle` | 7 | Points to fill one bottle |
+| `xp_per_bottle` | 7 | Points to fill one bottle, and what one mends at the anvil |
+| `anvil_bottles` | true | Anvils repair mending items with bottles |
 | `tomes` | true | Lecterns bind experience into tomes |
 | `tome_binding_share` | 0.05 | Base share of the bound points spent on the binding, on top |
 | `tome_binding_share_per_thousand` | 0.05 | Added to the share per thousand points bound |
@@ -100,7 +107,7 @@ If you do not have enough, the book stays a book and gains a line spelling out t
 
 Not needed. Everything here happens on the server and shows up on a vanilla client as items vanishing and orbs appearing, bottles filling, and a book that glows.
 
-With Pandorical on the server, ops get XP Crush's page in its mods menu: the switches for pistons, anvils and stalactites, falling columns, unattended kills, hopper bottles and tomes, and the column size, the unattended share (as a percent) and the experience a bottle takes. Prices and scaling stay in the file.
+With Pandorical on the server, ops get XP Crush's page in its mods menu: the switches for pistons, anvils and stalactites, falling columns, unattended kills, hopper bottles, anvil mending and tomes, and the column size, the unattended share (as a percent) and the experience a bottle takes. Prices and scaling stay in the file.
 
 ## Development
 

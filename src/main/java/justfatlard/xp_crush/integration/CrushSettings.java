@@ -33,6 +33,9 @@ public final class CrushSettings {
 			.backedBy(player -> XpCrushConfig.hopperBottles(), (player, on) -> XpCrushConfig.setHopperBottles(on));
 		group.number("xpPerBottle", "XP to fill a bottle", 1, 50, 1, 7)
 			.backedBy(player -> XpCrushConfig.xpPerBottle(), (player, points) -> XpCrushConfig.setXpPerBottle(points));
+		group.toggle("anvilBottles", "Anvils mend with XP bottles", true)
+			.describe("Bottles o' enchanting repair anything with mending")
+			.backedBy(player -> XpCrushConfig.anvilBottles(), (player, on) -> XpCrushConfig.setAnvilBottles(on));
 		group.toggle("tomes", "XP tomes on lecterns", true)
 			.backedBy(player -> XpCrushConfig.tomes(), (player, on) -> XpCrushConfig.setTomes(on));
 	}

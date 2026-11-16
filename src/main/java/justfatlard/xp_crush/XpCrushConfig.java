@@ -33,6 +33,7 @@ public final class XpCrushConfig {
 	private static double unattendedKillFraction = 0.75;
 	private static boolean hopperBottles = true;
 	private static int xpPerBottle = 7;
+	private static boolean anvilBottles = true;
 	private static boolean tomes = true;
 	private static double tomeBindingShare = 0.05;
 	private static double tomeBindingSharePerThousand = 0.05;
@@ -81,6 +82,10 @@ public final class XpCrushConfig {
 			# A thrown bottle pays three to eleven, seven on average.
 			hopper_bottles=true
 			xp_per_bottle=7
+
+			# An anvil repairs anything with mending using bottles o' enchanting as the material.
+			# Each bottle mends what xp_per_bottle points would mend as orbs, for one level.
+			anvil_bottles=true
 
 			# Write "/xp 500" on the first line of a book and quill and set it on a lectern: five
 			# hundred of your experience points go into a tome you can use later. The binding
@@ -194,6 +199,7 @@ public final class XpCrushConfig {
 		unattendedKillFraction = Math.max(0.0, getDouble(props, "unattended_kill_fraction", unattendedKillFraction));
 		hopperBottles = getBoolean(props, "hopper_bottles", hopperBottles);
 		xpPerBottle = Math.max(1, getInt(props, "xp_per_bottle", xpPerBottle));
+		anvilBottles = getBoolean(props, "anvil_bottles", anvilBottles);
 		tomes = getBoolean(props, "tomes", tomes);
 		tomeBindingShare = Math.max(0.0, getDouble(props, "tome_binding_share", tomeBindingShare));
 		tomeBindingSharePerThousand = Math.max(0.0, getDouble(props, "tome_binding_share_per_thousand", tomeBindingSharePerThousand));
@@ -284,6 +290,7 @@ public final class XpCrushConfig {
 	public static void setUnattendedKillFraction(double fraction) { unattendedKillFraction = fraction; store("unattended_kill_fraction", String.valueOf(fraction)); }
 	public static void setHopperBottles(boolean on) { hopperBottles = on; store("hopper_bottles", String.valueOf(on)); }
 	public static void setXpPerBottle(int points) { xpPerBottle = points; store("xp_per_bottle", String.valueOf(points)); }
+	public static void setAnvilBottles(boolean on) { anvilBottles = on; store("anvil_bottles", String.valueOf(on)); }
 	public static void setTomes(boolean on) { tomes = on; store("tomes", String.valueOf(on)); }
 
 	public static boolean pistons() { return pistons; }
@@ -294,6 +301,7 @@ public final class XpCrushConfig {
 	public static double unattendedKillFraction() { return unattendedKillFraction; }
 	public static boolean hopperBottles() { return hopperBottles; }
 	public static int xpPerBottle() { return xpPerBottle; }
+	public static boolean anvilBottles() { return anvilBottles; }
 	public static boolean tomes() { return tomes; }
 	public static double tomeBindingShare() { return tomeBindingShare; }
 	public static double tomeBindingSharePerThousand() { return tomeBindingSharePerThousand; }
