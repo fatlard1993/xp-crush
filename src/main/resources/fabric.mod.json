@@ -3,7 +3,7 @@
 	"id": "xp-crush",
 	"version": "${version}",
 	"name": "XP Crush",
-	"description": "Crush dropped items under a piston, an anvil or a falling column and get experience back, worth what the item took to make",
+	"description": "Crush dropped items under a piston or anvil for experience",
 	"authors": [
 		"justfatlard"
 	],
