@@ -103,9 +103,9 @@ If you do not have enough, the book stays a book and gains a line spelling out t
 
 ## Pandorical
 
-Not needed. Everything here happens on the server and shows up on a vanilla client as items vanishing and orbs appearing, bottles filling, and a book that glows.
+Not needed for the crushing, the bottles, the mending and the tomes. Everything here happens on the server and shows up on a vanilla client as items vanishing and orbs appearing, bottles filling, and a book that glows.
 
-With Pandorical on the server, ops get XP Crush's page in its mods menu: the switches for pistons, anvils and stalactites, falling columns, hopper bottles, anvil mending and tomes, and the column size and the experience a bottle takes. Mobs that die on their own paying a share of their XP is now one of Pandorical's rules of the world: XP Crush asks for it on, and it is on Pandorical's page. Prices and scaling stay in the file.
+With Pandorical on the server, ops get XP Crush's page in its mods menu: the switches for pistons, anvils and stalactites, falling columns, hopper bottles, anvil mending and tomes, and the column size and the experience a bottle takes. Mobs that die on their own paying a share of their XP is now one of Pandorical's rules of the world, so it needs Pandorical on the server: XP Crush asks for it on, and its switch and share are on Pandorical's page. Prices and scaling stay in the file.
 
 ## Development
 
