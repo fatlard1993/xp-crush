@@ -4,6 +4,10 @@
 		"And a few more ways for experience to move: mobs that die on their own pay a share, hoppers fill bottles, anvils mend with them, and a lectern binds experience into a book."
 	],
 	"versions": {
+		"1.2.3": [
+			"XP from mobs dying on their own moves to Pandorical as a rule of the world, which this asks on as it was here.",
+			"An older Pandorical no longer stops the server: XP from mobs dying on their own is left off with a warning instead of the loader refusing to start."
+		],
 		"1.2.2": [
 			"Describes itself in one short line of what it adds."
 		],
