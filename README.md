@@ -1,6 +1,6 @@
 # XP Crush
 
-A Minecraft Fabric mod. Crush a dropped item under a piston, an anvil or a fall of sand and get experience back, worth what the item took to make. And a few more ways for experience to move: mobs that die on their own pay a share, hoppers fill bottles, anvils mend with them, lecterns bind experience into books.
+A Minecraft Fabric mod. Crush a dropped item under a piston, an anvil or a fall of sand and get experience back, worth what the item took to make. And a few more ways for experience to move: hoppers fill bottles, anvils mend with them, lecterns bind experience into books.
 
 ## What This Mod Does
 
@@ -87,8 +87,6 @@ If you do not have enough, the book stays a book and gains a line spelling out t
 | `xp_per_block_stacked` | 0.25 | Added per extra block in a column or behind a piston head |
 | `xp_per_squeeze` | 1.0 | Added per axis pressed from both sides at once |
 | `force_cap` | 4.0 | The most the multiplier can reach |
-| `unattended_kills` | true | Mobs that die without a player pay a share |
-| `unattended_kill_fraction` | 0.75 | That share |
 | `hopper_bottles` | true | Hoppers fill empty bottles from orbs |
 | `xp_per_bottle` | 7 | Points to fill one bottle, and what one mends at the anvil |
 | `anvil_bottles` | true | Anvils repair mending items with bottles |
@@ -107,7 +105,7 @@ If you do not have enough, the book stays a book and gains a line spelling out t
 
 Not needed. Everything here happens on the server and shows up on a vanilla client as items vanishing and orbs appearing, bottles filling, and a book that glows.
 
-With Pandorical on the server, ops get XP Crush's page in its mods menu: the switches for pistons, anvils and stalactites, falling columns, unattended kills, hopper bottles, anvil mending and tomes, and the column size, the unattended share (as a percent) and the experience a bottle takes. Prices and scaling stay in the file.
+With Pandorical on the server, ops get XP Crush's page in its mods menu: the switches for pistons, anvils and stalactites, falling columns, hopper bottles, anvil mending and tomes, and the column size and the experience a bottle takes. Mobs that die on their own paying a share of their XP is now one of Pandorical's rules of the world: XP Crush asks for it on, and it is on Pandorical's page. Prices and scaling stay in the file.
 
 ## Development
 

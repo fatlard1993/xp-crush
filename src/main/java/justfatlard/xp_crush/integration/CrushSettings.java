@@ -23,12 +23,8 @@ public final class CrushSettings {
 			.backedBy(player -> XpCrushConfig.fallingColumns(), (player, on) -> XpCrushConfig.setFallingColumns(on));
 		group.number("columnMin", "Blocks in a crushing column", 2, 16, 1, 2)
 			.backedBy(player -> XpCrushConfig.columnMin(), (player, blocks) -> XpCrushConfig.setColumnMin(blocks));
-		group.toggle("unattendedKills", "Mobs dying on their own drop XP", true)
-			.describe("Falls, lava, golems: deaths no player caused")
-			.backedBy(player -> XpCrushConfig.unattendedKills(), (player, on) -> XpCrushConfig.setUnattendedKills(on));
-		group.number("unattendedKillPercent", "Of a player kill's XP, percent", 0, 100, 5, 75)
-			.backedBy(player -> (int) Math.round(XpCrushConfig.unattendedKillFraction() * 100),
-				(player, percent) -> XpCrushConfig.setUnattendedKillFraction(percent / 100.0));
+		// XP from mobs dying on their own lives in Pandorical now, as a rule of the world; asked on, as it was here
+		justfatlard.pandorical.api.PandoricalApi.rules().unattendedKillXp(true);
 		group.toggle("hopperBottles", "Hoppers fill bottles with XP", true)
 			.backedBy(player -> XpCrushConfig.hopperBottles(), (player, on) -> XpCrushConfig.setHopperBottles(on));
 		group.number("xpPerBottle", "XP to fill a bottle", 1, 50, 1, 7)

@@ -10,7 +10,6 @@
 		"ExperienceOrbHopperMixin",
 		"FallingBlockCrushMixin",
 		"HopperXpMixin",
-		"LivingEntityXpMixin",
 		"PistonCrushMixin"
 	]
 }

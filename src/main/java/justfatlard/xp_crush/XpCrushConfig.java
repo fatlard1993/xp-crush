@@ -29,8 +29,6 @@ public final class XpCrushConfig {
 	private static boolean fallingColumns = true;
 	private static int columnMin = 2;
 
-	private static boolean unattendedKills = true;
-	private static double unattendedKillFraction = 0.75;
 	private static boolean hopperBottles = true;
 	private static int xpPerBottle = 7;
 	private static boolean anvilBottles = true;
@@ -70,12 +68,6 @@ public final class XpCrushConfig {
 			falling_blocks=true
 			falling_columns=true
 			column_min=2
-
-			# Mobs that die with no player involved - the fall, the lava, the golem - drop this
-			# share of the experience they would have paid a player. Deaths vanilla already pays
-			# for are untouched.
-			unattended_kills=true
-			unattended_kill_fraction=0.75
 
 			# A hopper with an empty glass bottle in it, or in the container it feeds, takes in
 			# the experience orbs that land in it and fills the bottle once it holds this much.
@@ -195,8 +187,6 @@ public final class XpCrushConfig {
 		fallingBlocks = getBoolean(props, "falling_blocks", fallingBlocks);
 		fallingColumns = getBoolean(props, "falling_columns", fallingColumns);
 		columnMin = Math.max(1, getInt(props, "column_min", columnMin));
-		unattendedKills = getBoolean(props, "unattended_kills", unattendedKills);
-		unattendedKillFraction = Math.max(0.0, getDouble(props, "unattended_kill_fraction", unattendedKillFraction));
 		hopperBottles = getBoolean(props, "hopper_bottles", hopperBottles);
 		xpPerBottle = Math.max(1, getInt(props, "xp_per_bottle", xpPerBottle));
 		anvilBottles = getBoolean(props, "anvil_bottles", anvilBottles);
@@ -286,8 +276,6 @@ public final class XpCrushConfig {
 	public static void setFallingBlocks(boolean on) { fallingBlocks = on; store("falling_blocks", String.valueOf(on)); }
 	public static void setFallingColumns(boolean on) { fallingColumns = on; store("falling_columns", String.valueOf(on)); }
 	public static void setColumnMin(int blocks) { columnMin = blocks; store("column_min", String.valueOf(blocks)); }
-	public static void setUnattendedKills(boolean on) { unattendedKills = on; store("unattended_kills", String.valueOf(on)); }
-	public static void setUnattendedKillFraction(double fraction) { unattendedKillFraction = fraction; store("unattended_kill_fraction", String.valueOf(fraction)); }
 	public static void setHopperBottles(boolean on) { hopperBottles = on; store("hopper_bottles", String.valueOf(on)); }
 	public static void setXpPerBottle(int points) { xpPerBottle = points; store("xp_per_bottle", String.valueOf(points)); }
 	public static void setAnvilBottles(boolean on) { anvilBottles = on; store("anvil_bottles", String.valueOf(on)); }
@@ -297,8 +285,6 @@ public final class XpCrushConfig {
 	public static boolean fallingBlocks() { return fallingBlocks; }
 	public static boolean fallingColumns() { return fallingColumns; }
 	public static int columnMin() { return columnMin; }
-	public static boolean unattendedKills() { return unattendedKills; }
-	public static double unattendedKillFraction() { return unattendedKillFraction; }
 	public static boolean hopperBottles() { return hopperBottles; }
 	public static int xpPerBottle() { return xpPerBottle; }
 	public static boolean anvilBottles() { return anvilBottles; }
