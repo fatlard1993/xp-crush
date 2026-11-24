@@ -23,8 +23,13 @@ public final class CrushSettings {
 			.backedBy(player -> XpCrushConfig.fallingColumns(), (player, on) -> XpCrushConfig.setFallingColumns(on));
 		group.number("columnMin", "Blocks in a crushing column", 2, 16, 1, 2)
 			.backedBy(player -> XpCrushConfig.columnMin(), (player, blocks) -> XpCrushConfig.setColumnMin(blocks));
-		// XP from mobs dying on their own lives in Pandorical now, as a rule of the world; asked on, as it was here
-		justfatlard.pandorical.api.PandoricalApi.rules().unattendedKillXp(true);
+		// XP from mobs dying on their own lives in Pandorical now, as a rule of the world; asked on, as it was here.
+		// A Pandorical from before the rules has no such call, and is left to run without it.
+		try {
+			justfatlard.pandorical.api.PandoricalApi.rules().unattendedKillXp(true);
+		} catch (LinkageError older) {
+			justfatlard.xp_crush.Main.LOGGER.warn("[{}] Pandorical is older than 15.37.0, so mobs dying on their own drop no XP", justfatlard.xp_crush.Main.MOD_ID);
+		}
 		group.toggle("hopperBottles", "Hoppers fill bottles with XP", true)
 			.backedBy(player -> XpCrushConfig.hopperBottles(), (player, on) -> XpCrushConfig.setHopperBottles(on));
 		group.number("xpPerBottle", "XP to fill a bottle", 1, 50, 1, 7)
